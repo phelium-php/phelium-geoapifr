@@ -6,7 +6,7 @@ namespace Phelium\Component;
  
 EXAMPLE
 
-$GeoApiFr = new \Phelium\Component;
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
 $datas = $GeoApiFr
     ->get('nom', 'Versailles')
     ->fields(array('code', 'codeDepartement', 'codeRegion', 'nom'))
@@ -24,7 +24,7 @@ class GeoApiFr
      * 
      */
     private $availableParams = [
-        'code',
+        'codePostal',
         'codeDepartement',
         'codeRegion',
         'nom',
