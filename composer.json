@@ -1,6 +1,7 @@
 {
     "name": "phelium/geoapifr",
     "description": "GeoApi France",
+    "type": "library",
     "keywords": ["geo", "france", "api"],
     "homepage": "https://github.com/phelium-php/phelium-geoapifr",
     "authors": [
@@ -13,7 +14,7 @@
         "source": "https://github.com/phelium-php/phelium-geoapifr/tree/master"
     },
     "license": "GNU GPL 3.0",
-    "version": "0.1",
+    "version": "0.2",
     "require": {
         "php": ">=5.3.0"
     },
