@@ -18,9 +18,11 @@ Ou, exécutez simplement cette commande dans votre terminal :
 
 ## Utilisation
 
-    require 'vendor/autoload.php';
-    
-    use Phelium\Component\GeoApiFr;
+```php
+require 'vendor/autoload.php';
+
+use Phelium\Component\GeoApiFr;
+```
 
 
 ### Communes
@@ -56,11 +58,13 @@ Les champs autorisés pour la recherche sont :
 
 Exemple de recherche de la commune dont le nom est "Versailles" :
 
-    $GeoApiFr = new \Phelium\Component\GeoApiFr;
-    $datas = $GeoApiFr
-        ->communes()
-        ->fields(array('code', 'codeDepartement', 'codeRegion', 'nom'))
-        ->search('nom', 'Versailles');
+```php
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
+$datas = $GeoApiFr
+    ->communes()
+    ->fields(array('code', 'codeDepartement', 'codeRegion', 'nom'))
+    ->search('nom', 'Versailles');
+```
 
 Retour :
 
@@ -107,11 +111,13 @@ Les champs autorisés pour la recherche sont :
 
 Exemple de recherche du département dont le code est "2A" :
 
-    $GeoApiFr = new \Phelium\Component\GeoApiFr;
-    $datas = $GeoApiFr
-        ->departements()
-        ->fields(array('code', 'codeRegion', 'nom'))
-        ->search('code', '2A');
+```php
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
+$datas = $GeoApiFr
+    ->departements()
+    ->fields(array('code', 'codeRegion', 'nom'))
+    ->search('code', '2A');
+```
 
 Retour :
 
@@ -153,11 +159,13 @@ Les champs autorisés pour la recherche sont :
 
 Exemple de recherche de la région dont le code est "94" :
 
-    $GeoApiFr = new \Phelium\Component\GeoApiFr;
-    $datas = $GeoApiFr
-        ->regions()
-        ->fields(array('code', 'nom'))
-        ->search('code', '94');
+```php
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
+$datas = $GeoApiFr
+    ->regions()
+    ->fields(array('code', 'nom'))
+    ->search('code', '94');
+```
 
 Retour :
 
