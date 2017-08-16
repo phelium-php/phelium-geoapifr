@@ -4,13 +4,32 @@ namespace Phelium\Component;
 
 /**
  
-EXAMPLE
+EXAMPLES
 
+// Commune
 $GeoApiFr = new \Phelium\Component\GeoApiFr;
 $datas = $GeoApiFr
-    ->get('nom', 'Versailles')
+    ->communes()
     ->fields(array('code', 'codeDepartement', 'codeRegion', 'nom'))
-    ->search();
+    ->search('nom', 'Versailles');
+
+var_dump($datas);
+
+// Departement
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
+$datas = $GeoApiFr
+    ->departements()
+    ->fields(array('code', 'codeRegion', 'nom'))
+    ->search('code', '2A');
+
+var_dump($datas);
+
+// Region
+$GeoApiFr = new \Phelium\Component\GeoApiFr;
+$datas = $GeoApiFr
+    ->regions()
+    ->fields(array('code', 'nom'))
+    ->search('code', '94');
 
 var_dump($datas);
 
@@ -18,64 +37,45 @@ var_dump($datas);
 
 class GeoApiFr
 {
-    const URL_MAIN = "https://geo.api.gouv.fr/communes";
+    const BASE_URL = "https://geo.api.gouv.fr/";
 
-    /**
-     * 
-     */
-    private $availableParams = [
-        'codePostal',
-        'codeDepartement',
-        'codeRegion',
-        'nom',
-        'lon',
-        'lat',
-    ];
+    protected $URL = self::BASE_URL;
 
-    /**
-     * 
-     */
-    private $availableFields = [
-        'code',
-        'codeDepartement',
-        'codeRegion',
-        'nom',
-        'codesPostaux',
-        'surface',
-        'population',
-        'centre',
-        'contour',
-        'departement',
-        'region',
-    ];
+    protected $user_param = null;
+    protected $user_search = null;
+    protected $user_fields = [];
 
-    protected $param = null;
-    protected $search = null;
-    protected $fields = [];
-
+    protected $availableParams = [];
+    protected $availableFields = [];
 
 
     /**
-     * Add search
-     * 
-     * @param string $key Search parameter
-     * @param string $value Search value
-     * @return object This object
+     * Search by commune
      */
-    public function get($key, $value)
+    public function communes()
     {
-        if (in_array($key, $this->availableParams))
-        {
-            $this->param = $key;
-            $this->search = $value;
-        }
+        return new \Phelium\Component\GeoApiFr\Communes;
+    }
 
-        return $this;
+    /**
+     * Search by departement
+     */
+    public function departements()
+    {
+        return new \Phelium\Component\GeoApiFr\Departements;
+    }
+
+    /**
+     * Search by region
+     */
+    public function regions()
+    {
+        return new \Phelium\Component\GeoApiFr\Regions;
     }
 
 
     /**
-     * Add fields
+     * Add fields to return
      * 
      * @param array $fields Fields to add
      * @return object This object
@@ -86,7 +86,7 @@ class GeoApiFr
         {
             if (in_array($field, $this->availableFields))
             {
-                $this->fields[] = $field;
+                $this->user_fields[] = $field;
             }
         }
 
@@ -95,16 +95,35 @@ class GeoApiFr
 
 
     /**
+     * Search
+     * 
+     * @param string $key Search parameter
+     * @param string $value Search value
+     * @return run()
+     */
+    public function search($key = '', $value = '')
+    {
+        if (in_array($key, $this->availableParams))
+        {
+            $this->user_param = $key;
+            $this->user_search = $value;
+        }
+
+        return $this->run();
+    }
+
+
+    /**
      * Run search
      * 
      * @return array Array with status_code ; status_msg ; url ; datas
      */
-    public function search()
+    private function run()
     {
-        $url = self::URL_MAIN.'?'.$this->param.'='.$this->search;
+        $url = $this->URL.'?'.$this->user_param.'='.$this->user_search;
 
-        if (count($this->fields) > 0)
-            $url .= '&fields='.implode(',', $this->fields);
+        if (count($this->user_fields) > 0)
+            $url .= '&fields='.implode(',', $this->user_fields);
 
         $queryResponse = $this->_doRequest($url);
 
@@ -125,10 +144,10 @@ class GeoApiFr
         }
 
         $datas = [
-            'status_code' => $status_code,
-            'status_msg' => $status_msg,
-            'url' => $url,
-            'datas' => $datas,
+            'status_code'   => $status_code,
+            'status_msg'    => $status_msg,
+            'url'           => $url,
+            'datas'         => $datas,
         ];
 
         return $datas;
@@ -166,4 +185,3 @@ class GeoApiFr
     }
 
 }
-
